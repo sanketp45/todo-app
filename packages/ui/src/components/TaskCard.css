@@ -1,0 +1,74 @@
+@import "../styles/tokens.css";
+
+/* ── Card shell ───────────────────────────────────────────────────────── */
+
+.task-card {
+  position: relative;                        /* Badge uses absolute positioning */
+  display: flex;
+  flex-direction: row;
+  align-items: center;                       /* Figma: crossAxisAlignItems CENTER */
+  gap: var(--spacing-12);
+  padding: var(--spacing-32) var(--spacing-16); /* Figma: pt:32 pb:32 pl:16 pr:16 */
+
+  width: 100%;
+  box-sizing: border-box;
+
+  background-color: var(--color-surface);    /* Figma: #FFFFFF */
+  border: 1px solid var(--color-border);     /* Figma: stroke #E0E1E3 */
+  border-radius: 8px;                        /* Figma: cornerRadius 8 */
+}
+
+/* ── Badge — top-right absolute (Figma: x:318/297, y:0) ──────────────── */
+
+.task-card__badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/* ── Checkbox ─────────────────────────────────────────────────────────── */
+
+.task-card__checkbox {
+  flex-shrink: 0;
+}
+
+/* ── Content — grows to fill available width ──────────────────────────── */
+
+.task-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  flex: 1;
+  min-width: 0; /* prevent text overflow breaking layout */
+}
+
+/* Title — Default state */
+.task-card__title {
+  font-size: var(--font-size-base);        /* Figma: 14px */
+  font-weight: var(--font-weight-medium);  /* Figma: Inter Medium */
+  font-family: inherit;
+  color: var(--color-text-primary);        /* Figma: #1A1A1A */
+  line-height: 1.2;
+}
+
+/* Title — Completed state: muted + strikethrough + regular weight */
+.task-card--completed .task-card__title {
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-muted);          /* Figma: #757575 */
+  text-decoration: line-through;
+}
+
+/* Due date */
+.task-card__due-date {
+  font-size: var(--font-size-sm);          /* Figma: 12px */
+  font-weight: var(--font-weight-regular);
+  font-family: inherit;
+  color: var(--color-text-muted);
+  line-height: 1;
+}
+
+/* ── Right column — Delete button only ────────────────────────────────── */
+
+.task-card__right {
+  flex-shrink: 0;
+}

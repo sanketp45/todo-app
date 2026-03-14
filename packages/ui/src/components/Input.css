@@ -1,0 +1,87 @@
+@import "../styles/tokens.css";
+
+/* ── Wrapper ───────────────────────────────────────────────────────────── */
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4); /* Figma: itemSpacing 4px between label / box / helper */
+  width: 280px;          /* Figma: fixed width 280px */
+}
+
+/* ── Label — 12px Inter Medium ─────────────────────────────────────────── */
+
+.input-label {
+  font-size: var(--font-size-sm);       /* 12px */
+  font-weight: var(--font-weight-medium);
+  font-family: inherit;
+  color: var(--color-text-primary);     /* Default: #1A1A1A */
+  transition: color 0.15s ease;
+}
+
+/* Focused: label → primary */
+.input-wrapper:focus-within .input-label {
+  color: var(--color-primary);          /* #5B68D8 */
+}
+
+/* Error: label → destructive (wins over focus-within via specificity) */
+.input-wrapper:has(input[aria-invalid="true"]) .input-label {
+  color: var(--color-destructive);      /* #D32F2F */
+}
+
+/* Disabled: label → muted */
+.input-wrapper:has(input:disabled) .input-label {
+  color: var(--color-text-muted);       /* #757575 */
+}
+
+/* ── Input field — 40px h, 12px x-padding, radius 6 ────────────────────── */
+
+.input-field {
+  height: 40px;                         /* Figma: Input Box height 40px */
+  padding: 0 var(--spacing-12);         /* Figma: paddingLeft/Right 12px, top/bottom 0 */
+  border-radius: 6px;                   /* Figma: cornerRadius 6 */
+  border: 1px solid var(--color-border); /* Default stroke: #E0E1E3 */
+  background-color: var(--color-surface); /* #FFFFFF */
+  font-size: var(--font-size-base);     /* 14px */
+  font-family: inherit;
+  color: var(--color-text-primary);
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.input-field::placeholder {
+  color: var(--color-text-muted);       /* Figma placeholder: #757575 */
+}
+
+/* Focused: border → primary */
+.input-field:focus {
+  border-color: var(--color-primary);   /* #5B68D8 */
+}
+
+/* Error: border → destructive */
+.input-field[aria-invalid="true"] {
+  border-color: var(--color-destructive); /* #D32F2F */
+}
+
+/* Disabled: bg → background, keep border, no pointer */
+.input-field:disabled {
+  background-color: var(--color-background); /* Figma: #F5F5F6 */
+  border-color: var(--color-border);
+  cursor: not-allowed;
+}
+
+/* ── Helper / Error text — 12px Regular ───────────────────────────────── */
+
+.input-helper {
+  font-size: var(--font-size-sm);       /* 12px */
+  font-family: inherit;
+  color: var(--color-text-muted);       /* #757575 */
+}
+
+.input-error {
+  font-size: var(--font-size-sm);       /* 12px */
+  font-family: inherit;
+  color: var(--color-destructive);      /* #D32F2F */
+}
