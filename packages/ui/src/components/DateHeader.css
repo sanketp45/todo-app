@@ -1,0 +1,69 @@
+@import "../styles/tokens.css";
+
+/* Figma: DateHeader (node 1384:7659)                                     */
+/* 343px wide, HORIZONTAL: ArrowLeft · DateCenter · ArrowRight           */
+
+.date-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--spacing-12) 0;
+  box-sizing: border-box;
+}
+
+/* ── Arrow buttons — 32×32 circle ─────────────────────────────────────── */
+
+.date-header__arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.date-header__arrow:hover {
+  background-color: var(--color-background);
+}
+
+.date-header__arrow:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ── DateCenter — stacked DayName + DateStr ───────────────────────────── */
+
+.date-header__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+
+/* DayName — 32px/700, #1A1A2E */
+.date-header__day {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-date-day);
+  line-height: 1.2;
+  font-family: inherit;
+}
+
+/* DateStr — 14px/400, #6D6891 */
+.date-header__date {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-date-str);
+  line-height: 1;
+  font-family: inherit;
+}

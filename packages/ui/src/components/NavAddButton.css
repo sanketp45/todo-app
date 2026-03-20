@@ -1,0 +1,31 @@
+@import "../styles/tokens.css";
+
+/* Figma: NavAddButton (node 1384:7657)                                   */
+/* 38×38 circle, transparent bg, "+" 20px/700, #4E42B8                   */
+
+.nav-add-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background-color: transparent;
+  color: var(--color-nav-add);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  line-height: 1;
+  padding: 0;
+  transition: background-color 0.15s ease;
+}
+
+.nav-add-btn:hover {
+  background-color: rgba(78, 66, 184, 0.08);
+}
+
+.nav-add-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

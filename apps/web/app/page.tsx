@@ -1,46 +1,52 @@
 "use client";
 
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import { Button } from "@repo/ui/components/Button";
 import styles from "./page.module.css";
 
-export default function Home() {
+export default function LandingPage() {
   const router = useRouter();
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) router.replace("/home");
+      else setChecking(false);
+    });
+  }, [router]);
+
+  if (checking) return null;
 
   return (
     <main className={styles.page}>
-      {/* Top — illustration grows to fill all free space */}
-      <div className={styles.top}>
-        <div className={styles.illustrationWrap}>
-          <Image
-            src="/task.svg"
-            alt="Task management illustration"
-            fill
-            priority
-            sizes="286px"
-          />
+      {/* ── Logo + branding ── */}
+      <div className={styles.hero}>
+        <div className={styles.logoWrap}>
+          <div className={styles.logoCircle}>
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+              <line x1="14" y1="18" x2="34" y2="18" stroke="white" strokeWidth="3" strokeLinecap="round" />
+              <line x1="14" y1="24" x2="34" y2="24" stroke="white" strokeWidth="3" strokeLinecap="round" />
+              <line x1="14" y1="30" x2="28" y2="30" stroke="white" strokeWidth="3" strokeLinecap="round" />
+            </svg>
+          </div>
         </div>
+        <h1 className={styles.appName}>Taskly</h1>
+        <p className={styles.tagline}>Your mindful task companion</p>
       </div>
 
-      {/* Middle — title + subtitle */}
-      <div className={styles.middle}>
-        <h1 className={styles.title}>Task Management and to do list app</h1>
-        <p className={styles.subtitle}>
-          This productive tool is designed to help you better manage your task
-          project-wise conveniently!
-        </p>
-      </div>
-
-      {/* Bottom — CTA button pinned to bottom */}
-      <div className={styles.bottom}>
+      {/* ── Single CTA pinned to bottom ── */}
+      <div className={styles.ctas}>
         <Button
           variant="primary"
-          className={styles.cta}
-          onClick={() => router.push("/home")}
+          size="md"
+          style={{ width: "100%" }}
+          onClick={() => router.push("/signup")}
         >
-          START
+          GET STARTED
         </Button>
+        <p className={styles.footer}>Designed with care · 2025 Taskly</p>
       </div>
     </main>
   );

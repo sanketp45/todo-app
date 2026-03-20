@@ -1,0 +1,32 @@
+@import "../styles/tokens.css";
+
+/* Figma: SectionHeader (node 1384:7649)                                  */
+/* Pill: bg #FFF3DA, cornerRadius:99, HORIZONTAL gap:4px                  */
+/* Emoji: 13px | Label: 12px/600, #8B6914                                 */
+
+.section-header {
+  display: flex;
+  align-items: center;
+}
+
+.section-header__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-8) var(--spacing-12);
+  border-radius: 99px;
+  background-color: var(--color-section-pill-bg);
+}
+
+.section-header__emoji {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.section-header__label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-section-pill-text);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}

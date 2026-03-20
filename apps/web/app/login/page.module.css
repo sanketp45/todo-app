@@ -1,0 +1,161 @@
+/* ── Sign in page — matches Figma 1376:7614 ─────────────────────────── */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  max-width: 375px;
+  margin: 0 auto;
+  background: linear-gradient(to bottom, #ffffff 0%, #ffffff 38%, #D3C7FF 68%, #B59EFF 100%);
+}
+
+/* ── Content — all sits directly on gradient, no white card ─────────── */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 72px 24px 48px;
+}
+
+/* ── Heading ─────────────────────────────────────────────────────────── */
+
+.heading {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 6px;
+  line-height: 1.25;
+}
+
+.subheading {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(26, 26, 46, 0.6);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── Fields ──────────────────────────────────────────────────────────── */
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.fieldInput {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1.5px solid #c4c4d0;
+  background: #ffffff;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: inherit;
+  color: #1a1a2e;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.fieldInput::placeholder {
+  color: #9B97B8;
+}
+
+.fieldInput:focus {
+  border-color: #4E42B8;
+}
+
+/* ── Forgot password ─────────────────────────────────────────────────── */
+
+.forgotRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -4px;
+}
+
+.forgotLink {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4E42B8;
+  text-decoration: none;
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+/* ── Error ───────────────────────────────────────────────────────────── */
+
+.error {
+  font-size: 13px;
+  color: #d32f2f;
+  margin: 12px 0 0;
+  text-align: center;
+}
+
+/* ── Actions ─────────────────────────────────────────────────────────── */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  margin-top: 32px;
+}
+
+.submitBtn {
+  width: 100%;
+  height: 52px;
+  border-radius: 999px;
+  background: #1a1a2e;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: opacity 0.15s ease;
+}
+
+.submitBtn:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+.submitBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ── Switch text ─────────────────────────────────────────────────────── */
+
+.switchText {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(26, 26, 46, 0.65);
+  margin: 0;
+}
+
+.switchLink {
+  font-weight: 600;
+  color: #4E42B8;
+  text-decoration: none;
+}
+
+.switchLink:hover {
+  text-decoration: underline;
+}

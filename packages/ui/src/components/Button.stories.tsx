@@ -2,101 +2,103 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 import { Button } from "./Button";
 
-// Variants and sizes reflect the Figma "Button" component set exactly:
-// Type: Primary | Secondary | Destructive
-// Size: SM | MD (no LG variant exists in the Figma file)
-
 const meta = {
   title: "Components/Button",
   component: Button,
   parameters: {
     layout: "centered",
+    backgrounds: {
+      default: "light",
+      values: [
+        { name: "light", value: "#f5f5f5" },
+        { name: "dark",  value: "#1a1a1a" },
+      ],
+    },
+    docs: {
+      description: {
+        component:
+          "3D button — black-only design system. Sora SemiBold + framer-motion press animation. Three variants: **Primary** (dark grey), **Secondary** (medium grey), **Ghost** (white + black border).",
+      },
+    },
   },
   tags: ["autodocs"],
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary", "secondary", "destructive"],
-      description: "Visual style — maps to Figma `Type` property",
-      table: {
-        defaultValue: { summary: "primary" },
-      },
+      options: ["primary", "secondary", "ghost"],
+      description: "Visual style",
+      table: { defaultValue: { summary: "primary" } },
     },
     size: {
       control: "select",
-      options: ["sm", "md"],
-      description: "Button size — maps to Figma `Size` property",
-      table: {
-        defaultValue: { summary: "md" },
-      },
+      options: ["md", "sm"],
+      description: "Button size",
+      table: { defaultValue: { summary: "md" } },
     },
     disabled: {
       control: "boolean",
     },
     children: {
       control: "text",
+      description: "Button label",
     },
   },
   args: {
     onClick: fn(),
-    children: "Button",
-    variant: "primary",
-    size: "md",
+    children: "BUTTON",
   },
 } satisfies Meta<typeof Button>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// ── Variants ──────────────────────────────────────────────────────────────
+// ── Primary ───────────────────────────────────────────────────────────────
 
 export const Primary: Story = {
-  args: {
-    variant: "primary",
-    children: "Primary",
-  },
+  args: { variant: "primary", size: "md", children: "GET STARTED" },
 };
+
+export const PrimarySmall: Story = {
+  name: "Primary / SM",
+  args: { variant: "primary", size: "sm", children: "GET STARTED" },
+};
+
+// ── Secondary ─────────────────────────────────────────────────────────────
 
 export const Secondary: Story = {
-  args: {
-    variant: "secondary",
-    children: "Secondary",
-  },
+  args: { variant: "secondary", size: "md", children: "LEARN MORE" },
 };
 
-export const Destructive: Story = {
-  args: {
-    variant: "destructive",
-    children: "Destructive",
-  },
+export const SecondarySmall: Story = {
+  name: "Secondary / SM",
+  args: { variant: "secondary", size: "sm", children: "LEARN MORE" },
 };
 
-// ── Sizes ─────────────────────────────────────────────────────────────────
+// ── Ghost ─────────────────────────────────────────────────────────────────
 
-export const SizeSM: Story = {
-  name: "Size / SM",
-  args: {
-    size: "sm",
-    children: "Small",
-  },
+export const Ghost: Story = {
+  args: { variant: "ghost", size: "md", children: "CANCEL" },
 };
 
-export const SizeMD: Story = {
-  name: "Size / MD",
-  args: {
-    size: "md",
-    children: "Medium",
-  },
+export const GhostSmall: Story = {
+  name: "Ghost / SM",
+  args: { variant: "ghost", size: "sm", children: "CANCEL" },
 };
 
 // ── States ────────────────────────────────────────────────────────────────
 
 export const Disabled: Story = {
-  args: {
-    variant: "primary",
-    disabled: true,
-    children: "Disabled",
-  },
+  args: { variant: "primary", size: "md", children: "DISABLED", disabled: true },
+};
+
+export const DisabledSecondary: Story = {
+  name: "Disabled / Secondary",
+  args: { variant: "secondary", size: "md", children: "DISABLED", disabled: true },
+};
+
+export const DisabledGhost: Story = {
+  name: "Disabled / Ghost",
+  args: { variant: "ghost", size: "md", children: "DISABLED", disabled: true },
 };
 
 // ── Overview ──────────────────────────────────────────────────────────────
@@ -105,10 +107,10 @@ export const AllVariants: Story = {
   name: "Overview / All Variants",
   parameters: { controls: { disable: true } },
   render: (args) => (
-    <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+    <div style={{ display: "flex", gap: "16px", alignItems: "center", flexWrap: "wrap" }}>
       <Button {...args} variant="primary">Primary</Button>
       <Button {...args} variant="secondary">Secondary</Button>
-      <Button {...args} variant="destructive">Destructive</Button>
+      <Button {...args} variant="ghost">Ghost</Button>
     </div>
   ),
 };
@@ -117,24 +119,37 @@ export const AllSizes: Story = {
   name: "Overview / All Sizes",
   parameters: { controls: { disable: true } },
   render: (args) => (
-    <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-      <Button {...args} size="sm">Small (SM)</Button>
+    <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
       <Button {...args} size="md">Medium (MD)</Button>
+      <Button {...args} size="sm">Small (SM)</Button>
     </div>
   ),
+  args: { variant: "primary" },
 };
 
 export const VariantsBySizes: Story = {
   name: "Overview / Variants × Sizes",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-      {(["primary", "secondary", "destructive"] as const).map((variant) => (
-        <div key={variant} style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      {(["primary", "secondary", "ghost"] as const).map((variant) => (
+        <div key={variant} style={{ display: "flex", gap: "16px", alignItems: "center" }}>
           <Button variant={variant} size="md">{variant} MD</Button>
           <Button variant={variant} size="sm">{variant} SM</Button>
         </div>
       ))}
+    </div>
+  ),
+};
+
+export const AllDisabled: Story = {
+  name: "Overview / All Disabled",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div style={{ display: "flex", gap: "16px", alignItems: "center", flexWrap: "wrap" }}>
+      <Button variant="primary" disabled>Primary</Button>
+      <Button variant="secondary" disabled>Secondary</Button>
+      <Button variant="ghost" disabled>Ghost</Button>
     </div>
   ),
 };

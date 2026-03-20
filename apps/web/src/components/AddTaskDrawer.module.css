@@ -1,0 +1,270 @@
+/* ── AddTaskDrawer — matches Figma 1391:9739 ─────────────────────────── */
+/* 375×496, slides up from bottom, white fill                            */
+
+/* ── Scrim ───────────────────────────────────────────────────────────── */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.25s ease;
+  pointer-events: none;
+  z-index: 40;
+}
+
+.scrimVisible {
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+}
+
+/* ── Drawer shell ─────────────────────────────────────────────────────── */
+
+.drawer {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  width: min(375px, 100vw);
+  background: #ffffff;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  z-index: 50;
+  padding: 12px 16px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawerOpen {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── DrawerHeader ────────────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iconBtn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a1a2e;
+  border-radius: 50%;
+  transition: background 0.15s ease;
+  padding: 0;
+}
+
+.iconBtn:hover {
+  background: #f5f5f6;
+}
+
+/* ── Task name input — matches TaskNameWrap ──────────────────────────── */
+
+.nameWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 16px;
+}
+
+.nameLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.nameInput {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1.5px solid #e0e1e3;
+  background: #ffffff;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: inherit;
+  color: #1a1a2e;
+  outline: none;
+  transition: border-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.nameInput::placeholder {
+  color: #9B97B8;
+}
+
+.nameInput:focus {
+  border-color: #4E42B8;
+}
+
+/* ── Divider ─────────────────────────────────────────────────────────── */
+
+.divider {
+  height: 1px;
+  background: #e0e1e3;
+  margin: 0 -16px;
+}
+
+/* ── Row (label + value) ─────────────────────────────────────────────── */
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  min-height: 56px;
+}
+
+.rowLabel {
+  font-size: 15px;
+  font-weight: 400;
+  color: #1a1a2e;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Time of day dropdown ────────────────────────────────────────────── */
+
+.todDropdownWrap {
+  position: relative;
+}
+
+/* The selected-value pill with chevron */
+.todPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: 99px;
+  border: 1.5px solid #8B6914;
+  background: #FFF8E1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #8B6914;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s ease;
+}
+
+.todPill:hover {
+  background: #FFF0C8;
+}
+
+.todChevron {
+  color: #8B6914;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.todChevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Dropdown list */
+.todDropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  background: #ffffff;
+  border: 1.5px solid #e0e1e3;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 4px;
+  margin: 0;
+  min-width: 140px;
+  z-index: 60;
+}
+
+.todOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a2e;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.todOption:hover {
+  background: #f5f5f6;
+}
+
+.todOptionActive {
+  background: #FFF8E1;
+  color: #8B6914;
+}
+
+/* ── Native date / time inputs ───────────────────────────────────────── */
+
+.nativeInput {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  color: #1a1a2e;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  text-align: right;
+}
+
+/* ── CTA ─────────────────────────────────────────────────────────────── */
+
+.ctaWrap {
+  padding-top: 16px;
+}
+
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 52px;
+  border-radius: 999px;
+  border: none;
+  background: #1a1a2e;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.cta:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+.cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

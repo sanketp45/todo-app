@@ -1,66 +1,83 @@
-/* ── Landing page ─────────────────────────────────────────────────────── */
+/* ── Landing page — matches Figma 1368:7424 ──────────────────────────── */
+/* Gradient: white → #D3C7FF → #B59EFF (top to bottom)                  */
 
 .page {
   display: flex;
   flex-direction: column;
-  height: 100dvh;          /* exactly the viewport — no scroll */
+  align-items: center;
+  min-height: 100dvh;
   max-width: 375px;
   margin: 0 auto;
-  padding: 0 16px;
-  background-color: #f5f5f6;
-  box-sizing: border-box;
+  padding: 0 16px 40px;
+  background: linear-gradient(to bottom, #ffffff 0%, #EDE6FF 20%, #D3C7FF 50%, #B59EFF 80%, #A385F5 100%);
+  overflow: hidden;
 }
 
-/* ── Top — illustration area grows to fill all remaining space ─────── */
+/* ── Hero — logo + app name + tagline ────────────────────────────────── */
 
-.top {
-  flex: 1;                 /* absorbs all free height */
-  min-height: 0;           /* allows shrinking below natural size */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-top: 120px;
+}
+
+.logoWrap {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(160, 130, 240, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Wrapper sizes the illustration; `fill` img fits inside it */
-.illustrationWrap {
-  position: relative;
-  width: min(286px, 100%); /* scales down on narrow viewports */
-  aspect-ratio: 1 / 1;
+.logoCircle {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8B7EE8 0%, #6B56C8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(100, 80, 200, 0.35);
 }
 
-/* ── Middle — title + subtitle ─────────────────────────────────────── */
+.appName {
+  font-size: 44px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
 
-.middle {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.tagline {
+  font-size: 18px;
+  font-weight: 400;
+  color: #1a1a2e;
+  margin: 0;
   text-align: center;
 }
 
-.title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #1a1a1a;
-  line-height: 1.2;
-  margin: 0;
-}
+/* ── CTA pinned to bottom ─────────────────────────────────────────────── */
 
-.subtitle {
-  font-size: 14px;
-  font-weight: 400;
-  color: #757575;
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* ── Bottom — CTA button ───────────────────────────────────────────── */
-
-.bottom {
-  flex-shrink: 0;
-  padding: 16px 0 56px;   /* 16px gap above button, 56px breathing room below */
-}
-
-.cta {
+.ctas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
   width: 100%;
+  margin-top: auto;
+  padding-top: 40px;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+
+.footer {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(26, 26, 46, 0.5);
+  text-align: center;
+  margin: 0;
 }

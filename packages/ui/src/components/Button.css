@@ -1,78 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600&display=swap');
 @import "../styles/tokens.css";
 
 /* ── Base ─────────────────────────────────────────────────────────────── */
-
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-4);
-  border-radius: 6px; /* Figma: cornerRadius 6 */
-  border: 1px solid transparent;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   cursor: pointer;
-  font-weight: var(--font-weight-medium);
-  font-family: inherit;
-  line-height: 1;
+  border: none;
+  border-radius: 999px;
+  user-select: none;
+  outline: none;
   white-space: nowrap;
-  transition: opacity 0.15s ease, background-color 0.15s ease;
-  outline-offset: 2px;
+  transition: opacity 0.15s ease;
+  position: relative;
 }
 
 .btn:focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid #555;
+  outline-offset: 3px;
 }
 
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-/* ── Sizes (exact from Figma) ─────────────────────────────────────────── */
-
-/* SM — paddingTop/Bottom: 8px, paddingLeft/Right: 12px */
-.btn--sm {
-  padding: var(--spacing-8) var(--spacing-12);
-  font-size: var(--font-size-sm); /* 12px */
-}
-
-/* MD — paddingTop/Bottom: 12px, paddingLeft/Right: 16px */
+/* ── Sizes ────────────────────────────────────────────────────────────── */
 .btn--md {
-  padding: var(--spacing-12) var(--spacing-16);
-  font-size: var(--font-size-base); /* 14px */
+  padding: 13px 24px;
+  font-size: 15px;
+  min-width: 120px;
 }
 
-/* ── Variants (exact from Figma) ──────────────────────────────────────── */
+.btn--sm {
+  padding: 8px 16px;
+  font-size: 13px;
+  min-width: 90px;
+}
 
-/* Primary — fill: #5B68D8 (--color-primary), text: white */
+/* ── Variants ─────────────────────────────────────────────────────────── */
 .btn--primary {
-  background-color: var(--color-primary);
-  color: var(--color-surface);
-  border-color: var(--color-primary);
+  background-color: #333333;
+  color: #ffffff;
 }
 
 .btn--primary:hover:not(:disabled) {
-  opacity: 0.88;
+  background-color: #2a2a2a;
 }
 
-/* Secondary — fill: white (--color-surface), stroke: #E0E1E3 (--color-border), text: primary */
 .btn--secondary {
-  background-color: var(--color-surface);
-  color: var(--color-primary);
-  border-color: var(--color-border);
+  background-color: #606060;
+  color: #ffffff;
 }
 
 .btn--secondary:hover:not(:disabled) {
-  background-color: var(--color-background);
+  background-color: #555555;
 }
 
-/* Destructive — fill: #D32F2F (--color-destructive), text: white */
-.btn--destructive {
-  background-color: var(--color-destructive);
-  color: var(--color-surface);
-  border-color: var(--color-destructive);
+.btn--ghost {
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
 }
 
-.btn--destructive:hover:not(:disabled) {
-  opacity: 0.88;
+.btn--ghost:hover:not(:disabled) {
+  background-color: #f5f5f5;
+}
+
+/* ── Disabled ─────────────────────────────────────────────────────────── */
+.btn--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }

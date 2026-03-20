@@ -1,0 +1,34 @@
+@import "../styles/tokens.css";
+
+/* Figma: FAB component (node 1384:7655)                                  */
+/* 60×60 circle, fill: #0F1111, white + text (28px Bold)                 */
+
+.fab {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--color-fab-bg);
+  color: var(--color-surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.fab:hover {
+  opacity: 0.88;
+  transform: scale(1.05);
+}
+
+.fab:active {
+  transform: scale(0.96);
+}
+
+.fab:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}

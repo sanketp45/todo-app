@@ -1,0 +1,166 @@
+/* ── Task Detail page ────────────────────────────────────────────────── */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  max-width: 375px;
+  margin: 0 auto;
+  background: #f5f5f6;
+  overflow: hidden;
+}
+
+/* ── Header bar ─────────────────────────────────────────────────────── */
+
+.header {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 52px 16px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #e0e1e3;
+}
+
+.back {
+  font-size: 15px;
+  font-weight: 500;
+  color: #4E42B8;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+  font-family: inherit;
+}
+
+.headerTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0;
+  text-align: center;
+}
+
+/* ── Content ────────────────────────────────────────────────────────── */
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+/* ── Card ───────────────────────────────────────────────────────────── */
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Task title ─────────────────────────────────────────────────────── */
+
+.taskTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* ── Checkbox row ───────────────────────────────────────────────────── */
+
+.checkRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.checkInput {
+  width: 18px;
+  height: 18px;
+  accent-color: #4E42B8;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkLabel {
+  font-size: 14px;
+  color: #6D6891;
+}
+
+/* ── Divider ────────────────────────────────────────────────────────── */
+
+.divider {
+  height: 1px;
+  background: #e0e1e3;
+  margin: 0 -16px;
+}
+
+/* ── Meta rows ──────────────────────────────────────────────────────── */
+
+.metaRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.metaIcon { font-size: 16px; flex-shrink: 0; }
+
+.metaLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #9B97B8;
+  flex: 1;
+}
+
+.metaValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a2e;
+}
+
+/* ── Section ────────────────────────────────────────────────────────── */
+
+.section { display: flex; flex-direction: column; gap: 6px; }
+
+.sectionLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #9B97B8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sectionText {
+  font-size: 14px;
+  color: #1a1a2e;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Empty ──────────────────────────────────────────────────────────── */
+
+.empty {
+  text-align: center;
+  color: #9B97B8;
+  font-size: 14px;
+  padding: 24px 0;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+
+.footer {
+  flex-shrink: 0;
+  padding: 12px 16px 28px;
+  background: #ffffff;
+  border-top: 1px solid #e0e1e3;
+}
+
+.deleteBtn { width: 100%; }

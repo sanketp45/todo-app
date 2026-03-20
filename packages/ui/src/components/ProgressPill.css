@@ -1,0 +1,28 @@
+@import "../styles/tokens.css";
+
+/* Figma: ProgressPill (node 1383:7646)                                   */
+/* 74×32, cornerRadius:99, white fill, gap:4px, horizontal                */
+
+.progress-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-8) var(--spacing-12);
+  border-radius: 99px;
+  background-color: var(--color-surface);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.progress-pill__emoji {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.progress-pill__count {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-task-title);
+  line-height: 1;
+}
