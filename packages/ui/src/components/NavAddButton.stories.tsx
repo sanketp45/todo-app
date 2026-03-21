@@ -8,7 +8,13 @@ import { NavAddButton } from "./NavAddButton";
 const meta = {
   title: "Components/NavAddButton",
   component: NavAddButton,
-  parameters: { layout: "centered" },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/imyA6YjRkHdPzvWS0au9wA?node-id=1384-7657',
+    },
+    layout: "centered",
+  },
   tags: ["autodocs"],
   args: {
     onClick: fn(),

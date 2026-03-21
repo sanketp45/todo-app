@@ -6,7 +6,13 @@ import { SectionHeader } from "./SectionHeader";
 const meta = {
   title: "Components/SectionHeader",
   component: SectionHeader,
-  parameters: { layout: "centered" },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/imyA6YjRkHdPzvWS0au9wA?node-id=1384-7649',
+    },
+    layout: "centered",
+  },
   tags: ["autodocs"],
   argTypes: {
     label: { control: "text" },

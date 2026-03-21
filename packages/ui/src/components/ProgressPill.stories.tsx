@@ -6,7 +6,13 @@ import { ProgressPill } from "./ProgressPill";
 const meta = {
   title: "Components/ProgressPill",
   component: ProgressPill,
-  parameters: { layout: "centered" },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/imyA6YjRkHdPzvWS0au9wA?node-id=1383-7646',
+    },
+    layout: "centered",
+  },
   tags: ["autodocs"],
   argTypes: {
     completed: { control: { type: "number", min: 0 } },
