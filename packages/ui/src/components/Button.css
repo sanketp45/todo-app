@@ -39,12 +39,12 @@
 
 /* ── Variants ─────────────────────────────────────────────────────────── */
 .btn--primary {
-  background-color: #333333;
+  background-color: #6C5FD0;
   color: #ffffff;
 }
 
 .btn--primary:hover:not(:disabled) {
-  background-color: #2a2a2a;
+  background-color: #5f53c0;
 }
 
 .btn--secondary {

@@ -1,68 +1,90 @@
 "use client";
 
-import { InputHTMLAttributes, forwardRef, useId } from "react";
+import { InputHTMLAttributes, TextareaHTMLAttributes, forwardRef, useId } from "react";
 import "./Input.css";
 
-// Sourced from Figma "Input" component set (node 1287:10540)
-// State property: Default | Focused | Error | Disabled
-// States are driven by: :focus (CSS), aria-invalid (error), disabled (native)
+// Figma: "Input" component set (node 1287:10540)
+// States: Default | Focused | Error | Disabled | Multiline | Text area focused | Text area filled
+// cornerRadius:16, Label:14px/600, Input:16px/400
+
+interface InputBaseProps {
+  label?: string;
+  helperText?: string;
+  error?: string;
+  /** Renders a <textarea> instead of <input> (maps to Figma Multiline state) */
+  multiline?: boolean;
+}
 
 export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "id"> {
-  /** Rendered as <label> above the field — 12px Medium */
-  label?: string;
-  /** Shown below the field in muted colour (hidden when error is present) */
-  helperText?: string;
-  /** Triggers error state: red border + label + message below field */
-  error?: string;
+  extends InputBaseProps,
+    Omit<InputHTMLAttributes<HTMLInputElement>, "id"> {
+  multiline?: false;
   id?: string;
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
-  (
-    { label, helperText, error, id: externalId, className = "", ...props },
-    ref
-  ) => {
-    const generatedId = useId();
-    const id = externalId ?? generatedId;
-    const hasError = Boolean(error);
+export interface TextareaProps
+  extends InputBaseProps,
+    Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "id"> {
+  multiline: true;
+  id?: string;
+}
 
-    return (
-      <div className="input-wrapper">
-        {label && (
-          <label htmlFor={id} className="input-label">
-            {label}
-          </label>
-        )}
+export const Input = forwardRef<
+  HTMLInputElement | HTMLTextAreaElement,
+  InputProps | TextareaProps
+>((props, ref) => {
+  const { label, helperText, error, multiline = false, id: externalId, className = "", ...rest } = props;
 
+  const generatedId = useId();
+  const id = externalId ?? generatedId;
+  const hasError = Boolean(error);
+
+  const describedBy = error
+    ? `${id}-error`
+    : helperText
+      ? `${id}-helper`
+      : undefined;
+
+  return (
+    <div className="input-wrapper">
+      {label && (
+        <label htmlFor={id} className="input-label">
+          {label}
+        </label>
+      )}
+
+      {multiline ? (
+        <textarea
+          ref={ref as React.Ref<HTMLTextAreaElement>}
+          id={id}
+          className={["input-field", "input-field--multiline", className].filter(Boolean).join(" ")}
+          aria-invalid={hasError ? true : undefined}
+          aria-describedby={describedBy}
+          {...(rest as TextareaHTMLAttributes<HTMLTextAreaElement>)}
+        />
+      ) : (
         <input
-          ref={ref}
+          ref={ref as React.Ref<HTMLInputElement>}
           id={id}
           className={["input-field", className].filter(Boolean).join(" ")}
           aria-invalid={hasError ? true : undefined}
-          aria-describedby={
-            error
-              ? `${id}-error`
-              : helperText
-                ? `${id}-helper`
-                : undefined
-          }
-          {...props}
+          aria-describedby={describedBy}
+          {...(rest as InputHTMLAttributes<HTMLInputElement>)}
         />
+      )}
 
-        {error && (
-          <span id={`${id}-error`} className="input-error" role="alert">
-            {error}
-          </span>
-        )}
-        {!error && helperText && (
-          <span id={`${id}-helper`} className="input-helper">
-            {helperText}
-          </span>
-        )}
-      </div>
-    );
-  }
-);
+      {error && (
+        <span id={`${id}-error`} className="input-error" role="alert">
+          {error}
+        </span>
+      )}
+      {!error && helperText && (
+        <span id={`${id}-helper`} className="input-helper">
+          {helperText}
+        </span>
+      )}
+    </div>
+  );
+});
 
 Input.displayName = "Input";
