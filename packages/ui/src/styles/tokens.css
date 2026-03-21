@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Sora', system-ui, sans-serif;
+}
+
 @layer base {
   :root {
     /* Colors */
@@ -10,6 +16,30 @@
     --color-destructive: #D32F2F;
     --color-success-bg: #DCF9E6;
     --color-success-text: #16803D;
+
+    /* Button (Figma: node 1287:2346) */
+    --color-btn-primary: #212020;
+    --color-btn-secondary-bg: #FAFAFA;
+
+    /* Task Card (Figma: node 1364:6655) */
+    --color-icon-bg-default: #FFF3DA;
+    --color-icon-bg-completed: #EDE9FF;
+    --color-task-time: #9B97B8;
+    --color-task-title: #1A1A2E;
+
+    /* Section Header pill */
+    --color-section-pill-bg: #FFF3DA;
+    --color-section-pill-text: #8B6914;
+
+    /* FAB (Figma: node 1384:7655) */
+    --color-fab-bg: #0F1111;
+
+    /* Nav Add Button */
+    --color-nav-add: #4E42B8;
+
+    /* Date Header */
+    --color-date-day: #1A1A2E;
+    --color-date-str: #6D6891;
 
     /* Spacing */
     --spacing-4: 4px;
