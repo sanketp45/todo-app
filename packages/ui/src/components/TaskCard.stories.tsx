@@ -12,7 +12,7 @@ const meta = {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/imyA6YjRkHdPzvWS0au9wA?node-id=1364-6655',
+      url: 'https://www.figma.com/design/imyA6YjRkHdPzvWS0au9wA/Practice?node-id=1364-6655',
     },
     layout: "centered",
   },
