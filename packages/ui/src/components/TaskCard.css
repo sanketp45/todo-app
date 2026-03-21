@@ -1,7 +1,7 @@
 @import "../styles/tokens.css";
 
 /* Figma: Task Card — node 1364:6655                                      */
-/* h:76, w:343, cornerRadius:16, HORIZONTAL gap:12, padding:14px 16px    */
+/* h:76, w:343, cornerRadius:16, HORIZONTAL gap:12, padding:24px 16px    */
 /* bg: #FFFFFF, border: 1px solid #EEECFF                                 */
 
 .task-card {
@@ -9,7 +9,7 @@
   flex-direction: row;
   align-items: center;
   gap: var(--spacing-12);
-  padding: 14px var(--spacing-16);
+  padding: 24px var(--spacing-16);
 
   width: 100%;
   box-sizing: border-box;
