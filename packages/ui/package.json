@@ -10,7 +10,8 @@
     "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=chpt_95fc240940a92e9"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.1",
@@ -27,6 +28,7 @@
     "@types/react-dom": "19.2.2",
     "@vitest/browser-playwright": "^4.1.0",
     "@vitest/coverage-v8": "^4.1.0",
+    "chromatic": "^15.3.0",
     "eslint": "^9.39.1",
     "eslint-plugin-storybook": "^10.2.19",
     "playwright": "^1.58.2",

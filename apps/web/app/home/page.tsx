@@ -1,196 +1,232 @@
 "use client";
 
-import { useState } from "react";
-import { SearchBar } from "@repo/ui/components/SearchBar";
-import { TabBar } from "@repo/ui/components/TabItem";
+import { useState, useMemo, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
+import { ProgressPill } from "@repo/ui/components/ProgressPill";
+import { NavAddButton } from "@repo/ui/components/NavAddButton";
+import { DateHeader } from "@repo/ui/components/DateHeader";
+import { SectionHeader } from "@repo/ui/components/SectionHeader";
 import { TaskCard } from "@repo/ui/components/TaskCard";
-import { Badge } from "@repo/ui/components/Badge";
+import type { TaskIconVariant } from "@repo/ui/components/TaskCard";
+import { FAB } from "@repo/ui/components/FAB";
+import AddTaskDrawer from "@/components/AddTaskDrawer";
+import type { AddTaskData, TimeOfDay } from "@/components/AddTaskDrawer";
+import { useTasks } from "@/hooks/useTasks";
+import type { Task } from "@/hooks/useTasks";
 import styles from "./page.module.css";
 
-type TabId = "pending" | "completed" | "overdue";
+// ── Date helpers ──────────────────────────────────────────────────────────
 
-interface Task {
-  id: string;
-  title: string;
-  dueDate: string;
-  completed: boolean;
-  overdue?: boolean;
-  badgeLabel: string;
-  badgeVariant: "outline" | "default" | "success" | "destructive";
+function toISO(d: Date) {
+  return d.toISOString().slice(0, 10);
 }
 
-const INITIAL_TASKS: Task[] = [
-  {
-    id: "1",
-    title: "Design new landing page",
-    dueDate: "Mar 20, 2026",
-    completed: false,
-    badgeLabel: "High",
-    badgeVariant: "outline",
-  },
-  {
-    id: "2",
-    title: "Fix login bug",
-    dueDate: "Mar 15, 2026",
-    completed: false,
-    badgeLabel: "Urgent",
-    badgeVariant: "destructive",
-  },
-  {
-    id: "3",
-    title: "Write unit tests for auth module",
-    dueDate: "Mar 25, 2026",
-    completed: false,
-    badgeLabel: "Normal",
-    badgeVariant: "default",
-  },
-  {
-    id: "4",
-    title: "Update project README",
-    dueDate: "Mar 30, 2026",
-    completed: false,
-    badgeLabel: "Low",
-    badgeVariant: "success",
-  },
-  {
-    id: "5",
-    title: "Review pull request #42",
-    dueDate: "Mar 12, 2026",
-    completed: true,
-    badgeLabel: "High",
-    badgeVariant: "outline",
-  },
-  {
-    id: "6",
-    title: "Migrate database schema",
-    dueDate: "Mar 8, 2026",
-    completed: true,
-    badgeLabel: "Urgent",
-    badgeVariant: "destructive",
-  },
-  {
-    id: "7",
-    title: "Set up CI/CD pipeline",
-    dueDate: "Mar 10, 2026",
-    completed: false,
-    overdue: true,
-    badgeLabel: "High",
-    badgeVariant: "outline",
-  },
-  {
-    id: "8",
-    title: "Prepare Q1 report",
-    dueDate: "Mar 5, 2026",
-    completed: false,
-    overdue: true,
-    badgeLabel: "Urgent",
-    badgeVariant: "destructive",
-  },
+function addDays(dateStr: string, delta: number) {
+  const d = new Date(dateStr + "T00:00:00");
+  d.setDate(d.getDate() + delta);
+  return toISO(d);
+}
+
+function formatDayName(dateStr: string) {
+  return new Date(dateStr + "T00:00:00").toLocaleDateString("en-US", { weekday: "long" });
+}
+
+function formatDateStr(dateStr: string) {
+  return new Date(dateStr + "T00:00:00").toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+// ── Time-of-day helpers ───────────────────────────────────────────────────
+
+type Section = "morning" | "afternoon" | "evening";
+
+const SECTIONS: { id: Section; emoji: string; label: string }[] = [
+  { id: "morning",   emoji: "🌅", label: "MORNING" },
+  { id: "afternoon", emoji: "☀️", label: "AFTERNOON" },
+  { id: "evening",   emoji: "🌙", label: "EVENING" },
 ];
 
-const TABS = [
-  { id: "pending", label: "Pending" },
-  { id: "completed", label: "Completed" },
-  { id: "overdue", label: "Overdue" },
-];
-
-const SECTION_LABELS: Record<TabId, string> = {
-  pending: "Pending Tasks",
-  completed: "Completed Tasks",
-  overdue: "Overdue Tasks",
+const SECTION_ICONS: Record<Section, TaskIconVariant[]> = {
+  morning:   ["morning", "water", "office"],
+  afternoon: ["meeting", "office", "water"],
+  evening:   ["reading", "break", "morning"],
 };
 
+function getSection(datetime: string | null): Section {
+  if (!datetime) return "morning";
+  const h = new Date(datetime).getHours();
+  if (h < 12) return "morning";
+  if (h < 18) return "afternoon";
+  return "evening";
+}
+
+function getIcon(section: Section, index: number): TaskIconVariant {
+  const opts = SECTION_ICONS[section];
+  return opts[index % opts.length] ?? "office";
+}
+
+function formatTime(datetime: string | null): string {
+  if (!datetime) return "";
+  return new Date(datetime).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
+function getDatePart(datetime: string | null): string {
+  if (!datetime) return "";
+  return new Date(datetime).toISOString().slice(0, 10);
+}
+
+// ── Component ─────────────────────────────────────────────────────────────
+
 export default function HomePage() {
-  const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
-  const [activeTab, setActiveTab] = useState<TabId>("pending");
-  const [search, setSearch] = useState("");
+  const router = useRouter();
+  const { tasks, loading, addTask, updateTask } = useTasks();
+  const [selectedDate, setSelectedDate] = useState(toISO(new Date()));
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [nowStr, setNowStr] = useState("9:41");
 
-  const filtered = tasks
-    .filter((t) => {
-      if (activeTab === "pending") return !t.completed && !t.overdue;
-      if (activeTab === "completed") return t.completed;
-      if (activeTab === "overdue") return t.overdue && !t.completed;
-      return true;
-    })
-    .filter((t) =>
-      t.title.toLowerCase().includes(search.toLowerCase())
-    );
+  // Auth guard
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) router.replace("/login");
+      else setAuthChecked(true);
+    });
+  }, [router]);
 
-  const counts: Record<TabId, number> = {
-    pending: tasks.filter((t) => !t.completed && !t.overdue).length,
-    completed: tasks.filter((t) => t.completed).length,
-    overdue: tasks.filter((t) => t.overdue && !t.completed).length,
-  };
+  // Live clock
+  useEffect(() => {
+    function tick() {
+      setNowStr(new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: false }));
+    }
+    tick();
+    const id = setInterval(tick, 30_000);
+    return () => clearInterval(id);
+  }, []);
 
-  const totalActive = tasks.filter((t) => !t.completed).length;
+  // Filter tasks to selected date and group by section
+  const grouped = useMemo(() => {
+    const bySection: Record<Section, (Task & { section: Section; icon: TaskIconVariant; timeStr: string })[]> = {
+      morning: [], afternoon: [], evening: [],
+    };
+    const dayTasks = tasks.filter(t => getDatePart(t.datetime) === selectedDate);
+    dayTasks.forEach(task => {
+      const sec = getSection(task.datetime);
+      const idx = bySection[sec].length;
+      bySection[sec].push({
+        ...task,
+        section: sec,
+        icon: getIcon(sec, idx),
+        timeStr: formatTime(task.datetime),
+      });
+    });
+    return bySection;
+  }, [tasks, selectedDate]);
 
-  function handleToggle(id: string, completed: boolean) {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, completed } : t))
-    );
-  }
+  const total = useMemo(() => Object.values(grouped).flat().length, [grouped]);
+  const completed = useMemo(() => Object.values(grouped).flat().filter(t => t.completed).length, [grouped]);
+  const isEmpty = total === 0;
 
-  function handleDelete(id: string) {
-    setTasks((prev) => prev.filter((t) => t.id !== id));
-  }
+  const handleToggle = useCallback(async (id: string, done: boolean) => {
+    await updateTask(id, { completed: done });
+  }, [updateTask]);
+
+  const handleSave = useCallback(async (data: AddTaskData) => {
+    // Combine date + time into ISO datetime
+    const datetime = `${data.date}T${data.time}:00`;
+    await addTask({ name: data.name, datetime, priority: "normal" });
+  }, [addTask]);
+
+  if (!authChecked) return null;
 
   return (
     <div className={styles.page}>
-      {/* ── Header ── */}
-      <div className={styles.header}>
-        <div className={styles.headerTop}>
-          <div>
-            <h1 className={styles.title}>My Tasks</h1>
-            <p className={styles.subtitle}>
-              You have {totalActive} task{totalActive !== 1 ? "s" : ""} today
-            </p>
-          </div>
-          <div className={styles.avatar} aria-hidden="true">
-            JD
-          </div>
-        </div>
+      {/* ── StatusBar — Figma: 375×44, white bg ── */}
+      <div className={styles.statusBar}>
+        <span className={styles.statusTime}>{nowStr}</span>
+        <span className={styles.statusIcons}>▲ ))) ▮</span>
+      </div>
 
-        <SearchBar
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onClear={() => setSearch("")}
-        />
+      {/* ── TopBar — ProgressPill left, NavAddButton right — Figma: y:44 ── */}
+      <div className={styles.topBar}>
+        <ProgressPill completed={completed} total={total || 8} emoji="🎉" />
+        <NavAddButton aria-label="Add task" onClick={() => setDrawerOpen(true)} />
+      </div>
 
-        <TabBar
-          tabs={TABS}
-          activeTab={activeTab}
-          onTabChange={(id) => setActiveTab(id as TabId)}
+      {/* ── Divider — Figma: y:96, 1px ── */}
+      <div className={styles.divider} />
+
+      {/* ── DateSection — Figma: 375×100, y:97 ── */}
+      <div className={styles.dateSection}>
+        <DateHeader
+          dayName={formatDayName(selectedDate)}
+          dateStr={formatDateStr(selectedDate)}
+          onPrev={() => setSelectedDate(d => addDays(d, -1))}
+          onNext={() => setSelectedDate(d => addDays(d, 1))}
         />
       </div>
 
-      {/* ── Content ── */}
-      <div className={styles.content}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionTitle}>
-            {SECTION_LABELS[activeTab]}
-          </span>
-          <Badge variant="default">{counts[activeTab]}</Badge>
-        </div>
+      {/* ── Divider — Figma: y:197 ── */}
+      <div className={styles.divider} />
 
-        <div className={styles.taskList}>
-          {filtered.length === 0 ? (
-            <p className={styles.empty}>No tasks found</p>
-          ) : (
-            filtered.map((task) => (
-              <TaskCard
-                key={task.id}
-                title={task.title}
-                dueDate={task.dueDate}
-                completed={task.completed}
-                badgeLabel={task.badgeLabel}
-                badgeVariant={task.badgeVariant}
-                onToggle={(c) => handleToggle(task.id, c)}
-                onDelete={() => handleDelete(task.id)}
+      {/* ── TaskList — Figma: 375×614, y:198, scrollable ── */}
+      <div className={styles.taskList}>
+        {loading && <p className={styles.empty}>Loading…</p>}
+
+        {!loading && isEmpty && (
+          <div className={styles.emptyState}>
+            <p className={styles.emptyText}>Your day is a blank slate. Make it count.</p>
+          </div>
+        )}
+
+        {!loading && !isEmpty && SECTIONS.map(sec => {
+          const items = grouped[sec.id];
+          if (items.length === 0) return null;
+          return (
+            <div key={sec.id} className={styles.section}>
+              {/* SectionHeader — Figma: 133×31, MORNING(3) etc. */}
+              <SectionHeader
+                emoji={sec.emoji}
+                label={`${sec.label}  (${items.length})`}
               />
-            ))
-          )}
-        </div>
+              <div className={styles.cards}>
+                {items.map(task => (
+                  <TaskCard
+                    key={task.id}
+                    title={task.name}
+                    time={task.timeStr || ""}
+                    completed={task.completed}
+                    icon={task.icon}
+                    onToggle={done => handleToggle(task.id, done)}
+                    onClick={() => router.push(`/tasks/${task.id}`)}
+                    style={{ cursor: "pointer" }}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
+
+      {/* ── FAB — Figma: 60×60, #0F1111, y:728, absolute bottom-right ── */}
+      <FAB
+        className={styles.fab}
+        onClick={() => setDrawerOpen(true)}
+        aria-label="Add new task"
+      />
+
+      {/* ── Add Task Drawer — Figma: 1391:9739 ── */}
+      <AddTaskDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        onSave={handleSave}
+      />
     </div>
   );
 }
